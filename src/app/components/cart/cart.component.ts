@@ -1,11 +1,27 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-cart',
-  imports: [],
   templateUrl: './cart.component.html',
-  styleUrl: './cart.component.css'
+  styleUrls: ['./cart.component.css']
 })
-export class CartComponent {
+export class CartComponent implements OnInit {
+  cartItems: any[] = [];
 
+  constructor(private cartService: CartService) {}
+
+  ngOnInit() {
+    this.cartItems = this.cartService.getCart();
+  }
+
+  removeItem(index: number) {
+    this.cartService.removeFromCart(index);
+    this.cartItems = this.cartService.getCart(); // Refresh cart
+  }
+
+  clearCart() {
+    this.cartService.clearCart();
+    this.cartItems = [];
+  }
 }
